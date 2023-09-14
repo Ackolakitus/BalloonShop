@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  web:
+    build: .
+#    image: ackolakitus/kiii-project:latest
+    container_name: backend-app
+    ports:
+      - "8000:80"
+    depends_on:
+      - database
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/balloon-shop
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  database:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+     - POSTGRES_PASSWORD=postgres
+     - POSTGRES_USER=postgres
+     - POSTGRES_DB=balloon-shop
+    volumes:
+      - db_data:/var/lib/postgresql/data/
+
+volumes:
+    db_data:
